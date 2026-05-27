@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -8,13 +9,15 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  username      String?
-  password      String?
-  avatar        String?
-  googleId      String?  @unique
-  provider      String   @default("local")
-  isOnline      Boolean  @default(false)
-  createdAt     DateTime @default(now())
+  id                    String   @id @default(cuid())
+  email                 String   @unique
+  username              String?
+  password              String?
+  avatar                String?
+  googleId              String?  @unique
+  provider              String   @default("local")
+  isOnline              Boolean  @default(false)
+  passwordResetToken    String?  @unique
+  passwordResetExpires  DateTime?
+  createdAt             DateTime @default(now())
 }

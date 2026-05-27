@@ -24,7 +24,7 @@ passport.use(
             data: {
               email: profile.emails[0].value,
               username: profile.displayName,
-              avatar: profile.photos[0].value,
+              avatar: profile.photos[0]?.value || null,
               googleId: profile.id,
               provider: "google",
             },
@@ -33,8 +33,27 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
+        console.error("Google Strategy Error:", error);
         done(error, null);
       }
     }
   )
 );
+
+// Serialize user to store in session
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// Deserialize user from session
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+    done(null, user);
+  } catch (error) {
+    console.error("Deserialize User Error:", error);
+    done(error, null);
+  }
+});

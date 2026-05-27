@@ -1,8 +1,23 @@
 const express = require("express");
+
 const passport = require("passport");
-const jwt = require("jsonwebtoken");
+
+const {
+  signup,
+  login,
+  forgotPassword,
+  resetPassword,
+} = require("../controllers/authController");
 
 const router = express.Router();
+
+router.post("/signup", signup);
+
+router.post("/login", login);
+
+router.post("/forgot-password", forgotPassword);
+
+router.post("/reset-password", resetPassword);
 
 router.get(
   "/google",
@@ -18,6 +33,9 @@ router.get(
   }),
 
   async (req, res) => {
+
+    const jwt = require("jsonwebtoken");
+
     const token = jwt.sign(
       {
         userId: req.user.id,
@@ -28,11 +46,9 @@ router.get(
       }
     );
 
-    res.json({
-      success: true,
-      token,
-      user: req.user,
-    });
+    res.redirect(
+      `http://localhost:5173/oauth-success?token=${token}`
+    );
   }
 );
 

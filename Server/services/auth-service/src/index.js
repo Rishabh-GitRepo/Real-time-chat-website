@@ -6,7 +6,7 @@ const passport = require("passport");
 
 require("./config/passport");
 
-const authRoutes = require("./routes/authRoutes");
+const authRoutes = require("./routes/AuthRoutes");
 
 const app = express();
 
@@ -28,4 +28,5 @@ const PORT = process.env.PORT || 4001;
 
 app.listen(PORT, () => {
   console.log(`Auth Service running on ${PORT}`);
+  console.log(`JWT Secret: ${process.env.GOOGLE_CLIENT_ID}`);
 });
